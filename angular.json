@@ -367,7 +367,7 @@
 				"build": {
 					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
-						"outputPath": "dist/demo-forge",
+						"outputPath": "C:\\Fathym\\Git\\Apps\\Forge\\Fathym.Forge.Web\\wwwroot\\marketing",
 						"index": "projects/demo-forge/src/index.html",
 						"main": "projects/demo-forge/src/main.ts",
 						"polyfills": "projects/demo-forge/src/polyfills.ts",

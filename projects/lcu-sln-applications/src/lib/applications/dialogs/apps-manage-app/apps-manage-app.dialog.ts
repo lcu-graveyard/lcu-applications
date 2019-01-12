@@ -1,304 +1,315 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatCheckboxChange, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { isResultSuccess, BaseModeledResponse } from '@lcu/core';
-import { Status } from '@lcu/common';
-import { ApplicationModel, ApplicationAPIProxySetup } from '@lcu/apps';
-import { ForgeApplicationsService } from '@lcu/daf-common';
-import { AppsManageAppDialogConfig } from '../../applications.core';
+import { Component, OnInit, Inject } from "@angular/core";
+import { MatCheckboxChange, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { isResultSuccess, BaseModeledResponse } from "@lcu/core";
+import { Status } from "@lcu/common";
+import { ApplicationModel, ApplicationAPIProxySetup } from "@lcu/apps";
+import { ForgeApplicationsService } from "@lcu/daf-common";
+import { AppsManageAppDialogConfig } from "../../applications.core";
 
 @Component({
-	selector: 'applications-manage-app-dialog',
-	templateUrl: './apps-manage-app.dialog.html',
-	styleUrls: ['./apps-manage-app.dialog.scss']
+  selector: "applications-manage-app-dialog",
+  templateUrl: "./apps-manage-app.dialog.html",
+  styleUrls: ["./apps-manage-app.dialog.scss"]
 })
 export class AppsManageAppDialog implements OnInit {
-	//	Properties
-	public ActiveApplicationType: 'API' | 'View';
+  //	Properties
+  public ActiveApplicationType: "API" | "View";
 
-	public Application: ApplicationModel;
+  public Application: ApplicationModel;
 
-	public AppOptions: ApplicationModel[];
+  public AppOptions: ApplicationModel[];
+
+  public EditAppInfo: boolean;
 
-	public EditAppInfo: boolean;
+  public Error: string;
+
+  public Loading: boolean;
+
+  public NewProxyFrom: string;
+
+  public NewProxyTo: string;
+
+  public ProxyApplicationName: string;
+
+  public ProxyServiceNames: string[];
+
+  public ViewApplicationType:
+    | "AppBuilder"
+    | "AppDisplay"
+    | "Custom"
+    | "Flow"
+    | "FlowCore"
+    | "Forge"
+    | "Marketing"
+    | "NPM"
+    | "NoEnt"
+    | "Register"
+    | "SignIn";
+
+  //	Constructors
+  constructor(
+    protected dialogRef: MatDialogRef<AppsManageAppDialog>,
+    @Inject(MAT_DIALOG_DATA) protected data: AppsManageAppDialogConfig,
+    protected appsSvc: ForgeApplicationsService
+  ) {
+    this.Application = JSON.parse(JSON.stringify(data.Application));
+
+    this.AppOptions = data.AppOptions;
+
+    if (!this.Application.Security) this.Application.Security = <any>{};
+
+    if (!this.Application.Lookup) this.Application.Lookup = <any>{};
+  }
+
+  //	Life Cycle
+  public ngOnInit() {
+    this.loadApplicationServices();
+
+    if (this.Application.View) {
+      this.ActiveApplicationType = "View";
+
+      if (!this.Application.View.Google) this.Application.View.Google = <any>{};
+
+      if (!this.Application.View.BaseHref && this.Application.Lookup)
+        this.Application.View.BaseHref = this.Application.Lookup.PathRegex;
+    } else if (this.Application.API) {
+      this.ActiveApplicationType = "API";
+    }
 
-	public Error: string;
+    this.determineViewApplicationType();
+  }
 
-	public Loading: boolean;
+  //	API Methods
+  public AddProxy(from: string, to: string) {
+    if ((from || to) && (from != "" || to != "")) {
+      this.Application.API.Proxies = this.Application.API.Proxies
+        ? [<ApplicationAPIProxySetup>{ From: from, To: to }, ...this.Application.API.Proxies]
+        : [<ApplicationAPIProxySetup>{ From: from, To: to }];
 
-	public NewProxyFrom: string;
+      this.NewProxyFrom = "";
 
-	public NewProxyTo: string;
+      this.NewProxyTo = "";
+    }
+  }
 
-	public ProxyApplicationName: string;
+  public DeleteApplication() {
+    if (this.Application && confirm(`Are you sure you want to delete the application '${this.Application.Name}'?`)) {
+      this.Loading = true;
 
-	public ProxyServiceNames: string[];
+      this.Error = null;
 
-	public ViewApplicationType: 'AppBuilder' | 'Custom' | 'AppDisplay' | 'Flow' | 'FlowCore' | 'Forge' | 'Marketing' | 'NoEnt' | 'Register' | 'SignIn';
+      this.appsSvc.Delete(this.Application.ID).subscribe(
+        result => {
+          if (isResultSuccess(result)) {
+            this.dialogRef.close(<BaseModeledResponse<ApplicationModel>>{
+              Model: this.Application,
+              Status: result.Status
+            });
+          } else {
+            this.Error = result.Status.Message;
 
-	//	Constructors
-	constructor(protected dialogRef: MatDialogRef<AppsManageAppDialog>, @Inject(MAT_DIALOG_DATA) protected data: AppsManageAppDialogConfig,
-		protected appsSvc: ForgeApplicationsService) {
-		this.Application = JSON.parse(JSON.stringify(data.Application));
+            this.Loading = false;
+          }
+        },
+        err => {
+          this.Loading = false;
+        },
+        () => {}
+      );
+    }
+  }
 
-		this.AppOptions = data.AppOptions;
+  public HandleProxyChange(event: MatCheckboxChange) {
+    if (event.checked && !this.Application.Proxy) {
+      this.Application.Proxy = {
+        Application: this.ProxyApplicationName,
+        Service: ""
+      };
+    } else if (!event.checked) {
+      this.Application.Proxy = null;
+    }
+  }
 
-		if (!this.Application.Security)
-			this.Application.Security = <any>{};
+  public OpenAppBuilder() {
+    this.Loading = true;
 
-		if (!this.Application.Lookup)
-			this.Application.Lookup = <any>{};
-	}
+    this.Error = null;
 
-	//	Life Cycle
-	public ngOnInit() {
-		this.loadApplicationServices();
+    this.appsSvc.SetAppBuilder(true).subscribe(result => {
+      if (isResultSuccess(result)) {
+        window.open(this.Application.View.BaseHref, "_blank");
 
-		if (this.Application.View) {
-			this.ActiveApplicationType = 'View';
+        this.Loading = false;
+      } else {
+        this.Loading = false;
 
-			if (!this.Application.View.Google)
-				this.Application.View.Google = <any>{};
+        this.Error = result.Status.Message;
+      }
+    });
+  }
 
-			if (!this.Application.View.BaseHref && this.Application.Lookup)
-				this.Application.View.BaseHref = this.Application.Lookup.PathRegex
-		} else if (this.Application.API) {
-			this.ActiveApplicationType = 'API';
-		}
+  public RemoveProxy(proxy: ApplicationAPIProxySetup) {
+    this.Application.API.Proxies = this.Application.API.Proxies.filter(p => p.From != proxy.From && p.To != proxy.To);
+  }
 
-		this.determineViewApplicationType();
-	}
+  public SaveApplication() {
+    this.Loading = true;
 
-	//	API Methods
-	public AddProxy(from: string, to: string) {
-		if ((from || to) && (from != '' || to != '')) { 
-			this.Application.API.Proxies = this.Application.API.Proxies ?
-				[<ApplicationAPIProxySetup>{ From: from, To: to }, ...this.Application.API.Proxies] : [<ApplicationAPIProxySetup>{ From: from, To: to }];
+    this.Error = null;
 
-			this.NewProxyFrom = '';
+    if (this.ActiveApplicationType == "API") {
+      this.Application.View = null;
+    } else if (this.ActiveApplicationType == "View") {
+      this.Application.API = null;
 
-			this.NewProxyTo = '';
-		}
-	}
+      if (this.Application.Lookup && this.Application.Lookup.Claims)
+        this.Application.Lookup.Claims = this.Application.Lookup.Claims.filter(c => c.Type != "DAF:ApplicationBuilder");
 
-	public DeleteApplication() {
-		if (this.Application && confirm(`Are you sure you want to delete the application '${this.Application.Name}'?`)) {
-			this.Loading = true;
+      switch (this.ViewApplicationType) {
+        case "AppBuilder":
+          this.Application.View.ApplicationName = "app-builder";
 
-			this.Error = null;
+          this.Application.View.FilesRoot = "/apps/app-builder";
 
-			this.appsSvc.Delete(this.Application.ID).subscribe(
-				(result) => {
-					if (isResultSuccess(result)) {
-						this.dialogRef.close(<BaseModeledResponse<ApplicationModel>>{
-							Model: this.Application,
-							Status: result.Status
-						});
-					} else {
-						this.Error = result.Status.Message;
+          if (!this.Application.Lookup) this.Application.Lookup = <any>{};
 
-						this.Loading = false;
-					}
-				},
-				(err) => {
-					this.Loading = false;
-				},
-				() => {
-				});
-		}
-	}
+          if (!this.Application.Lookup.Claims) this.Application.Lookup.Claims = [];
 
-	public HandleProxyChange(event: MatCheckboxChange) {
-		if (event.checked && !this.Application.Proxy) {
-			this.Application.Proxy = {
-				Application: this.ProxyApplicationName,
-				Service: ''
-			};
-		} else if (!event.checked) {
-			this.Application.Proxy = null;
-		}
-	}
+          this.Application.Lookup.Claims.push({
+            CheckWithout: false,
+            Type: "DAF:ApplicationBuilder",
+            Values: ["True", "true"]
+          });
 
-	public OpenAppBuilder() {
-		this.Loading = true;
+          break;
 
-		this.Error = null;
+        case "AppDisplay":
+          this.Application.View.ApplicationName = "app-display";
 
-		this.appsSvc.SetAppBuilder(true).subscribe(
-			(result) => {
-				if (isResultSuccess(result)) {
-					window.open(this.Application.View.BaseHref, '_blank');
+          this.Application.View.FilesRoot = "/apps/app-display";
 
-					this.Loading = false;
-				} else {
-					this.Loading = false;
+          break;
 
-					this.Error = result.Status.Message;
-				}
-			});
-	}
+        case "Flow":
+          this.Application.View.ApplicationName = "flow";
 
-	public RemoveProxy(proxy: ApplicationAPIProxySetup) {
-		this.Application.API.Proxies = this.Application.API.Proxies.filter(p => p.From != proxy.From && p.To != proxy.To);
-	}
+          this.Application.View.FilesRoot = "/flow";
 
-	public SaveApplication() {
-		this.Loading = true;
+          break;
 
-		this.Error = null;
+        case "FlowCore":
+          this.Application.View.ApplicationName = "flow-core";
 
-		if (this.ActiveApplicationType == 'API') {
-			this.Application.View = null;
-		} else if (this.ActiveApplicationType == 'View') {
-			this.Application.API = null;
+          this.Application.View.FilesRoot = "/flow-core";
 
-			if (this.Application.Lookup && this.Application.Lookup.Claims)
-				this.Application.Lookup.Claims = this.Application.Lookup.Claims.filter(c => c.Type != 'DAF:ApplicationBuilder');
+          break;
 
-			switch (this.ViewApplicationType) {
-				case 'AppBuilder':
-					this.Application.View.ApplicationName = 'app-builder';
+        case "Forge":
+          this.Application.View.ApplicationName = "forge";
 
-					this.Application.View.FilesRoot = '/apps/app-builder';
+          this.Application.View.FilesRoot = "/forge";
 
-					if (!this.Application.Lookup)
-						this.Application.Lookup = <any>{};
+          break;
 
-					if (!this.Application.Lookup.Claims)
-						this.Application.Lookup.Claims = [];
+        case "Marketing":
+          this.Application.View.ApplicationName = "marketing";
 
-					this.Application.Lookup.Claims.push({
-						CheckWithout: false,
-						Type: 'DAF:ApplicationBuilder',
-						Values: ['True', 'true']
-					});
+          this.Application.View.FilesRoot = "/marketing";
 
-					break;
+          break;
 
-				case 'AppDisplay':
-					this.Application.View.ApplicationName = 'app-display';
+        //case 'NoEnt':
+        //	this.Application.View.ApplicationName = 'no-ent';
 
-					this.Application.View.FilesRoot = '/apps/app-display';
+        //	this.Application.View.FilesRoot = '/apps/no-ent';
 
-					break;
+        //	break;
 
-				case 'Flow':
-					this.Application.View.ApplicationName = 'flow';
+        case "Register":
+          this.Application.View.ApplicationName = "register";
 
-					this.Application.View.FilesRoot = '/flow';
+          this.Application.View.FilesRoot = "/apps/register";
 
-					break;
+          break;
 
-				case 'FlowCore':
-					this.Application.View.ApplicationName = 'flow-core';
+        case "SignIn":
+          this.Application.View.ApplicationName = "sign-in";
 
-					this.Application.View.FilesRoot = '/flow-core';
+          this.Application.View.FilesRoot = "/apps/sign-in";
 
-					break;
+          break;
 
-				case 'Forge':
-					this.Application.View.ApplicationName = 'forge';
+        default:
+        case "Custom":
+          break;
+      }
 
-					this.Application.View.FilesRoot = '/forge';
+      var skipProxy = ["Custom", "NPM"];
 
-					break;
+      if (this.ViewApplicationType && skipProxy.indexOf(this.ViewApplicationType) <= 0)
+        this.Application.Proxy = {
+          Application: "Fathym.Forge.Web.Fabric",
+          Service: "Fathym.Forge.Web"
+        };
+    }
 
-				case 'Marketing':
-					this.Application.View.ApplicationName = 'marketing';
+    if (
+      !this.Application.Lookup.PathRegex &&
+      !this.Application.Lookup.QueryRegex &&
+      !this.Application.Lookup.UserAgentRegex &&
+      !this.Application.Lookup.Claims &&
+      !this.Application.Lookup.RoleSets
+    )
+      this.Application.Lookup = null;
 
-					this.Application.View.FilesRoot = '/marketing';
+    this.dialogRef.close(<BaseModeledResponse<ApplicationModel>>{
+      Model: this.Application,
+      Status: <Status>{
+        Code: 0,
+        Message: "Success"
+      }
+    });
+  }
 
-					break;
+  //	Helpers
+  protected determineViewApplicationType() {
+    this.ViewApplicationType = null;
 
-				//case 'NoEnt':
-				//	this.Application.View.ApplicationName = 'no-ent';
+    if (
+      this.Application.Proxy &&
+      this.Application.Proxy.Application == "Fathym.Forge.Web.Fabric" &&
+      this.Application.Proxy.Service == "Fathym.Forge.Web"
+    ) {
+      if (this.Application.View.FilesRoot == "/apps/no-ent") this.ViewApplicationType = "NoEnt";
+      else if (this.Application.View.FilesRoot == "/apps/app-builder") this.ViewApplicationType = "AppBuilder";
+      else if (this.Application.View.FilesRoot == "/apps/app-display") this.ViewApplicationType = "AppDisplay";
+      else if (this.Application.View.FilesRoot == "/forge") this.ViewApplicationType = "Forge";
+      else if (this.Application.View.FilesRoot == "/flow") this.ViewApplicationType = "Flow";
+      else if (this.Application.View.FilesRoot == "/flow-core") this.ViewApplicationType = "FlowCore";
+      else if (this.Application.View.FilesRoot == "/marketing") this.ViewApplicationType = "Marketing";
+      else if (this.Application.View.FilesRoot == "/apps/register") this.ViewApplicationType = "Register";
+      else if (this.Application.View.FilesRoot == "/apps/sign-in") this.ViewApplicationType = "SignIn";
+      else if (this.Application.View.FilesRoot.startsWith('@')) this.ViewApplicationType = 'NPM';
+    }
 
-				//	this.Application.View.FilesRoot = '/apps/no-ent';
+    if (!this.ViewApplicationType) this.ViewApplicationType = "Custom";
+  }
 
-				//	break;
+  protected loadApplicationServices() {
+    this.appsSvc.ListFabricApplicationServices().subscribe(
+      result => {
+        if (isResultSuccess(result)) {
+          this.ProxyApplicationName = result.Model.ApplicationName;
 
-				case 'Register':
-					this.Application.View.ApplicationName = 'register';
-
-					this.Application.View.FilesRoot = '/apps/register';
-
-					break;
-
-				case 'SignIn':
-					this.Application.View.ApplicationName = 'sign-in';
-
-					this.Application.View.FilesRoot = '/apps/sign-in';
-
-					break;
-
-				default:
-				case 'Custom':
-					break;
-			}
-
-			if (this.ViewApplicationType && this.ViewApplicationType != 'Custom')
-				this.Application.Proxy = {
-					Application: 'Fathym.Forge.Web.Fabric',
-					Service: 'Fathym.Forge.Web'
-				};
-		}
-
-		if (!this.Application.Lookup.PathRegex && !this.Application.Lookup.QueryRegex && !this.Application.Lookup.UserAgentRegex &&
-			!this.Application.Lookup.Claims && !this.Application.Lookup.RoleSets)
-			this.Application.Lookup = null;
-
-		this.dialogRef.close(<BaseModeledResponse<ApplicationModel>>{
-			Model: this.Application,
-			Status: <Status>{
-				Code: 0,
-				Message: 'Success'
-			}
-		});
-	}
-
-	//	Helpers
-	protected determineViewApplicationType() {
-		this.ViewApplicationType = null;
-
-		if (this.Application.Proxy &&
-			this.Application.Proxy.Application == 'Fathym.Forge.Web.Fabric' && this.Application.Proxy.Service == 'Fathym.Forge.Web') {
-			if (this.Application.View.FilesRoot == '/apps/no-ent')
-				this.ViewApplicationType = 'NoEnt';
-			else if (this.Application.View.FilesRoot == '/apps/app-builder')
-				this.ViewApplicationType = 'AppBuilder';
-			else if (this.Application.View.FilesRoot == '/apps/app-display')
-				this.ViewApplicationType = 'AppDisplay';
-			else if (this.Application.View.FilesRoot == '/forge')
-				this.ViewApplicationType = 'Forge';
-			else if (this.Application.View.FilesRoot == '/flow')
-				this.ViewApplicationType = 'Flow';
-			else if (this.Application.View.FilesRoot == '/flow-core')
-				this.ViewApplicationType = 'FlowCore';
-			else if (this.Application.View.FilesRoot == '/marketing')
-				this.ViewApplicationType = 'Marketing';
-			else if (this.Application.View.FilesRoot == '/apps/register')
-				this.ViewApplicationType = 'Register';
-			else if (this.Application.View.FilesRoot == '/apps/sign-in')
-				this.ViewApplicationType = 'SignIn';
-		}
-
-		if (!this.ViewApplicationType)
-			this.ViewApplicationType = 'Custom';
-	}
-
-	protected loadApplicationServices() {
-		this.appsSvc.ListFabricApplicationServices().subscribe(
-			(result) => {
-				if (isResultSuccess(result)) {
-					this.ProxyApplicationName = result.Model.ApplicationName;
-
-					this.ProxyServiceNames = result.Model.ServiceNames;
-				} else {
-					console.log(result.Status.Message);
-				}
-			},
-			(err) => { },
-			() => {
-				this.Loading = false;
-			});
-	}
+          this.ProxyServiceNames = result.Model.ServiceNames;
+        } else {
+          console.log(result.Status.Message);
+        }
+      },
+      err => {},
+      () => {
+        this.Loading = false;
+      }
+    );
+  }
 }

@@ -5,7 +5,7 @@ import { ForgeDisplayPointerBuilderComponent } from './display-pointer-builder/d
 import { ForgeDisplayPointerMarketplaceComponent } from './display-pointer-marketplace/display-pointer-marketplace.component';
 import { ForgeDisplayPointerRenderComponent } from './display-pointer-render/display-pointer-render.component';
 import { ForgeDisplayCreatePointerBuilderDialog } from './dialogs/create-pointer/create-pointer.dialog';
-import { MatToolbarModule, MatFormFieldModule, MatSelectModule } from '@angular/material';
+import { MatToolbarModule, MatFormFieldModule, MatSelectModule, MatButtonModule } from '@angular/material';
 import { DAFUIModule } from '@lcu/daf-ui';
 
 export class ForgeDisplayPointerDisplayModule extends BaseDisplayModule {
@@ -31,7 +31,8 @@ var comps = [
 
 @NgModule({
 	imports: [
-		FathymSharedModule,
+    FathymSharedModule,
+    MatButtonModule,
 		MatFormFieldModule,
 		MatSelectModule,
 		MatToolbarModule,
