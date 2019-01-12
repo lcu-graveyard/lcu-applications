@@ -1,0 +1,84 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "common": [
+        "dist/common"
+      ],
+      "common/*": [
+        "dist/common/*"
+      ],
+      "lcu-el-display-content": [
+        "dist/lcu-el-display-content"
+      ],
+      "lcu-el-display-content/*": [
+        "dist/lcu-el-display-content/*"
+      ],
+      "lcu-el-display-pointer": [
+        "dist/lcu-el-display-pointer"
+      ],
+      "lcu-el-display-pointer/*": [
+        "dist/lcu-el-display-pointer/*"
+      ],
+      "lcu-el-display-charts": [
+        "dist/lcu-el-display-charts"
+      ],
+      "lcu-el-display-charts/*": [
+        "dist/lcu-el-display-charts/*"
+      ],
+      "lcu-el-display-action": [
+        "dist/lcu-el-display-action"
+      ],
+      "lcu-el-display-action/*": [
+        "dist/lcu-el-display-action/*"
+      ],
+      "lcu-el-display-json-view": [
+        "dist/lcu-el-display-json-view"
+      ],
+      "lcu-el-display-json-view/*": [
+        "dist/lcu-el-display-json-view/*"
+      ],
+      "lcu-el-layout-stacked": [
+        "dist/lcu-el-layout-stacked"
+      ],
+      "lcu-el-layout-stacked/*": [
+        "dist/lcu-el-layout-stacked/*"
+      ],
+      "lcu-el-layout-flex": [
+        "dist/lcu-el-layout-flex"
+      ],
+      "lcu-el-layout-flex/*": [
+        "dist/lcu-el-layout-flex/*"
+      ],
+      "lcu-el-layout-switch-state": [
+        "dist/lcu-el-layout-switch-state"
+      ],
+      "lcu-el-layout-switch-state/*": [
+        "dist/lcu-el-layout-switch-state/*"
+      ],
+      "lcu-sln-applications": [
+        "dist/lcu-sln-applications"
+      ],
+      "lcu-sln-applications/*": [
+        "dist/lcu-sln-applications/*"
+      ]
+    }
+  }
+}

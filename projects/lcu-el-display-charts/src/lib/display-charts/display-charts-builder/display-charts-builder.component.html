@@ -1,0 +1,45 @@
+<div>
+    <div>
+        <mat-form-field class="mat-full-width">
+            <mat-select placeholder="Choose the chart type" [(ngModel)]="Details.ChartType">
+                <mat-option value="Gauge">Gauge</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div>
+        <mat-slide-toggle [(ngModel)]="Details.ShowLegend">Show Legend?</mat-slide-toggle>
+
+        <mat-form-field class="mat-full-width" *ngIf="Details.ShowLegend">
+            <input matInput placeholder="Legend Title" [(ngModel)]="Details.LegendTitle" />
+        </mat-form-field>
+    </div>
+
+    <!-- <div>
+        <mat-form-field class="mat-full-width">
+            <mat-select placeholder="Choose the chart theme" [(ngModel)]="Details.Theme">
+                <mat-option value="Dark">Dark</mat-option>
+
+                <mat-option value="Light">Light</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div> -->
+    
+    <div>
+        <mat-form-field class="push-out">
+            <input matInput type="number" placeholder="Scale Start (default 0)" [(ngModel)]="Details.Info.ScaleStart" />
+        </mat-form-field>
+        
+        <mat-form-field class="push-out">
+            <input matInput type="number" placeholder="Scale End (default 100)" [(ngModel)]="Details.Info.ScaleEnd" />
+        </mat-form-field>
+            
+        <mat-form-field class="push-out">
+            <input matInput type="number" placeholder="Angle Span (default 2400)" [(ngModel)]="Details.Info.AngleSpan" />
+        </mat-form-field>
+        
+        <mat-form-field class="push-out">
+            <input matInput type="number" placeholder="Angle Start (default -120)" [(ngModel)]="Details.Info.AngleStart" />
+        </mat-form-field>
+    </div>
+</div>

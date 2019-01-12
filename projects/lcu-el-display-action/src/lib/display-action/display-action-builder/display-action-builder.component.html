@@ -1,0 +1,80 @@
+<div>
+	<div class="push-horizontal">
+		<mat-form-field class="mat-full-width">
+			<input matInput placeholder="Path" [(ngModel)]="Details.Path" name="path" required />
+		</mat-form-field>
+	</div>
+
+	<div class="simple-flex">
+		<mat-form-field fxFlex="30%">
+			<input matInput placeholder="Text" [(ngModel)]="Details.Text" name="text" required />
+		</mat-form-field>
+
+		<span class="filler"></span>
+
+		<mat-form-field fxFlex="30%">
+			<input matInput placeholder="Icon" [(ngModel)]="Details.Icon" name="icon" />
+		</mat-form-field>
+
+		<span class="filler"></span>
+
+		<mat-form-field fxFlex="30%">
+			<mat-select placeholder="Color" [(ngModel)]="Details.Color" name="color">
+				<mat-option value="">-- none --</mat-option>
+				<mat-option value="primary">Primary</mat-option>
+				<mat-option value="accent">Accent</mat-option>
+				<mat-option value="warn">Warn</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+
+	<div class="push-horizontal" *ngIf="Details.Context == 'Page'">
+		<mat-form-field>
+			<input matInput type="number" placeholder="Scroll Offset" [(ngModel)]="Details.ScrollOffset" name="scroll" required />
+		</mat-form-field>
+	</div>
+
+	<div class="simple-flex">
+		<mat-form-field fxFlex="45%">
+			<mat-select placeholder="Type" [(ngModel)]="Details.Type" name="type">
+				<mat-option value="Anchor">Anchor</mat-option>
+				<mat-option value="AnchorMaterial">AnchorMaterial</mat-option>
+				<mat-option value="AnchorRaised">AnchorRaised</mat-option>
+				<mat-option value="Button">Button</mat-option>
+				<mat-option value="ButtonMaterial">ButtonMaterial</mat-option>
+				<mat-option value="ButtonRaised">ButtonRaised</mat-option>
+				<mat-option value="Menu">Menu</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<span class="filler"></span>
+
+		<mat-form-field fxFlex="45%">
+			<mat-select placeholder="Context" [(ngModel)]="Details.Context" name="context">
+				<mat-option value="Internal">Internal</mat-option>
+				<mat-option value="External">External</mat-option>
+				<mat-option value="Page">Page</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+
+	<div class="push-horizontal">
+		<h3>Insight Configuration</h3>
+
+		<mat-form-field class="push-left">
+			<input matInput placeholder="Insights Action" [(ngModel)]="Details.Insight.Action" name="insightAction" />
+		</mat-form-field>
+
+		<mat-form-field class="push-left">
+			<input matInput placeholder="Insights Category" [(ngModel)]="Details.Insight.Category" name="insightCategory" />
+		</mat-form-field>
+
+		<mat-form-field class="push-left">
+			<input matInput placeholder="Insights Label" [(ngModel)]="Details.Insight.Label" name="insightLabel" />
+		</mat-form-field>
+
+		<mat-form-field class="push-left">
+			<input matInput placeholder="Insights Value" [(ngModel)]="Details.Insight.Value" name="insightValue" />
+		</mat-form-field>
+	</div>
+</div>

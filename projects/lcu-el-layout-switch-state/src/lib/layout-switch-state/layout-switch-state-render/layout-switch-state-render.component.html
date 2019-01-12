@@ -1,0 +1,21 @@
+<ng-container *ngFor="let info of RenderElements; let i = index;">
+	<ng-container *ngIf="Details.Configs[i]; let config">
+		<forge-page-element [element]="info.Element" state="Render" [context]="info.Context" [data]="Data" *ngIf="config.State == CurrentStateKey">
+		</forge-page-element>
+	</ng-container>
+</ng-container>
+
+<div class="state-actions">
+	<ng-container *ngFor="let stateKey of StateKeys; let i = index;">
+		<ng-container *ngIf="stateKey != CurrentStateKey">
+			<ng-container *ngIf="Details.States[stateKey]; let state">
+				<a mat-button class="push-right" (click)="CurrentStateKey = stateKey;">
+					{{state.Text}}
+				</a>
+
+				<!--<forge-page-element [element]="state.Element" state="Render" [context]="Context" [data]="Data">
+				</forge-page-element>-->
+			</ng-container>
+		</ng-container>
+	</ng-container>
+</div>

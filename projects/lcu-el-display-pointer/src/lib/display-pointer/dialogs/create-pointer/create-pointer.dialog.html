@@ -1,0 +1,15 @@
+<form #form="ngForm">
+	<mat-form-field class="mat-full-width">
+		<input matInput placeholder="Pointer Name" [(ngModel)]="Name" name="name" required />
+	</mat-form-field>
+
+	<div>
+		<button mat-raised-button type="submit" color="primary" (click)="Save()" [disabled]="!form.form.valid">
+			Save Control
+		</button>
+
+		<button mat-button color="warn" (click)="Cancel()">
+			Cancel
+		</button>
+	</div>
+</form>

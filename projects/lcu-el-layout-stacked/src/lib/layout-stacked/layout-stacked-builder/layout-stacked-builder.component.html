@@ -1,0 +1,23 @@
+<mat-toolbar>
+	<button mat-raised-button class="push-left" (click)="AddPageElement()">
+		<mat-icon>add</mat-icon> Add Stacked Element
+	</button>
+</mat-toolbar>
+
+<div *ngIf="Details && Details.Elements">
+	<ng-container *ngFor="let pe of Details.Elements; let i = index;">
+		<div class="contents {{pe.Rendering ? pe.Rendering.Lookup || '' : ''}}">
+			<forge-page-element [element]="pe" [state]="GetBuilderState(pe)" [context]="Context" [data]="Data" [force-header]="true" [show-delete-action]="false">
+				<ng-container ngProjectAs="main-menu-actions">
+					<button mat-menu-item (click)="RemovePageElement(pe, i)">Delete</button>
+				</ng-container>
+
+				<!--<ng-container ngProjectAs="trail-actions">
+					<button mat-icon-button>
+						<mat-icon>drag_handle</mat-icon>
+					</button>
+				</ng-container>-->
+			</forge-page-element>
+		</div>
+	</ng-container>
+</div>

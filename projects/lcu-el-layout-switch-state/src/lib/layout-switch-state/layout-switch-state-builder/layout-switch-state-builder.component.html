@@ -1,0 +1,53 @@
+<ng-container *ngIf="CurrentState">
+	<mat-toolbar>
+		<button mat-raised-button class="push-left" (click)="AddPageElement()">
+			<mat-icon>add</mat-icon> Add {{CurrentStateKey}} State Element
+		</button>
+	</mat-toolbar>
+
+	<div *ngIf="Details && Details.Elements">
+		<ng-container *ngFor="let pe of Details.Elements; let i = index;">
+			<ng-container *ngIf="Details.Configs[i]; let config">
+				<div class="contents {{pe.Rendering ? pe.Rendering.Lookup || '' : ''}}" *ngIf="config.State == CurrentStateKey">
+					<forge-page-element [element]="pe" [state]="GetBuilderState(pe)" [context]="Context" [data]="Data" [force-header]="true" [show-delete-action]="false">
+						<ng-container ngProjectAs="main-menu-actions">
+							<button mat-menu-item (click)="RemovePageElement(pe, i)">Delete</button>
+						</ng-container>
+					</forge-page-element>
+				</div>
+			</ng-container>
+		</ng-container>
+	</div>
+</ng-container>
+
+<div class="state-actions">
+	<hr class="push-out" />
+
+	<ng-container *ngFor="let stateKey of StateKeys; let i = index;">
+		<div *ngIf="Details.States[stateKey]; let state">
+			<span class="mat-title">{{stateKey}}</span>
+
+			<mat-form-field class="push-right">
+				<input matInput placeholder="State Change Text" [(ngModel)]="state.Text" name="text" />
+			</mat-form-field>
+
+			<mat-form-field class="push-right">
+				<input matInput type="number" placeholder="State Order" [(ngModel)]="state.Order" name="text" />
+			</mat-form-field>
+
+			<a mat-button class="push-right" (click)="CurrentStateKey = stateKey;">
+				Edit
+			</a>
+		</div>
+	</ng-container>
+
+	<div>
+		<mat-form-field>
+			<input matInput placeholder="New State" [(ngModel)]="NewState" name="newState" />
+		</mat-form-field>
+
+		<a mat-icon-button class="push-right" (click)="AddState()">
+			<mat-icon>add</mat-icon>
+		</a>
+	</div>
+</div>

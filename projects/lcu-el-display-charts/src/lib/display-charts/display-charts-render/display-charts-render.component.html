@@ -1,0 +1,11 @@
+<ng-container *ngIf="Details.ChartType === 'Gauge'">
+    <ngx-charts-gauge [results]="Details.Results"
+        [legend]="Details.ShowLegend"
+        [legendTitle]="Details.LegendTitle"
+        [scheme]="Details.Colors"
+        [min]="Details.Info.ScaleStart"
+        [max]="Details.Info.ScaleEnd"
+        [angleSpan]="Details.Info.AngleSpan"
+        [startAngle]="Details.Info.AngleStart"
+        [valueFormatting]="ValueFormatting()"></ngx-charts-gauge>
+</ng-container>

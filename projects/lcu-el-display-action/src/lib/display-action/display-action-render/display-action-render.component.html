@@ -1,0 +1,181 @@
+<ng-container *ngIf="Details.Type == 'Anchor'">
+	<a *ngIf="Details.Context == 'Page'" class="pointer" (click)="GoTo(Details.Path)"
+	   [angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+	   [angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</a>
+
+	<a *ngIf="Details.Context == 'External'" class="pointer" (click)="Navigate(Details.Path, true)"
+	   [angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+	   [angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</a>
+
+	<a *ngIf="Details.Context == 'Internal'" class="pointer" [routerLink]="Details.Path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+	   [angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+	   [angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</a>
+</ng-container>
+
+<ng-container *ngIf="Details.Type == 'AnchorMaterial'">
+	<a *ngIf="Details.Context == 'Page'" mat-button (click)="GoTo(Details.Path)" [color]="Details.Color"
+	   [angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+	   [angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</a>
+
+	<a *ngIf="Details.Context == 'External'" mat-button (click)="Navigate(Details.Path, true)" [color]="Details.Color"
+	   [angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+	   [angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</a>
+
+	<a *ngIf="Details.Context == 'Internal'" mat-button [routerLink]="Details.Path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" [color]="Details.Color"
+	   [angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+	   [angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</a>
+</ng-container>
+
+<ng-container *ngIf="Details.Type == 'AnchorRaised'">
+	<a *ngIf="Details.Context == 'Page'" mat-raised-button (click)="GoTo(Details.Path)" [color]="Details.Color"
+	   [angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+	   [angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</a>
+
+	<a *ngIf="Details.Context == 'External'" mat-raised-button (click)="Navigate(Details.Path, true)" [color]="Details.Color"
+	   [angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+	   [angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</a>
+
+	<a *ngIf="Details.Context == 'Internal'" mat-raised-button [routerLink]="Details.Path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" [color]="Details.Color"
+	   [angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+	   [angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</a>
+</ng-container>
+
+<ng-container *ngIf="Details.Type == 'Button'">
+	<button *ngIf="Details.Context == 'Page'" (click)="GoTo(Details.Path)"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+
+	<button *ngIf="Details.Context == 'External'" (click)="Navigate(Details.Path, true)"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+
+	<button *ngIf="Details.Context == 'Internal'" [routerLink]="Details.Path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+</ng-container>
+
+<ng-container *ngIf="Details.Type == 'ButtonMaterial'">
+	<button *ngIf="Details.Context == 'Page'" mat-button (click)="GoTo(Details.Path)" [color]="Details.Color"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+
+	<button *ngIf="Details.Context == 'External'" mat-button (click)="Navigate(Details.Path, true)" [color]="Details.Color"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+
+	<button *ngIf="Details.Context == 'Internal'" mat-button [routerLink]="Details.Path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" [color]="Details.Color"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+</ng-container>
+
+<ng-container *ngIf="Details.Type == 'ButtonRaised'">
+	<button *ngIf="Details.Context == 'Page'" mat-raised-button (click)="GoTo(Details.Path)" [color]="Details.Color"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+
+	<button *ngIf="Details.Context == 'External'" mat-raised-button (click)="Navigate(Details.Path, true)" [color]="Details.Color"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+
+	<button *ngIf="Details.Context == 'Internal'" mat-raised-button [routerLink]="Details.Path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" [color]="Details.Color"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+</ng-container>
+
+<ng-container *ngIf="Details.Type == 'Menu'">
+	<button *ngIf="Details.Context == 'Page'" mat-menu-item (click)="GoTo(Details.Path)"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+
+	<button *ngIf="Details.Context == 'External'" mat-menu-item (click)="Navigate(Details.Path, true)"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+
+	<button *ngIf="Details.Context == 'Internal'" mat-menu-item [routerLink]="Details.Path" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+			[angulartics2On]="Details.Insight?.On" [angularticsAction]="Details.Insight?.Action" [angularticsLabel]="Details.Insight?.Label"
+			[angularticsValue]="Details.Insight?.Value" [angularticsCategory]="Details.Insight?.Category" [angularticsProperties]="Details.Insight?.Properties">
+		<span [innerHTML]="Details.Text" *ngIf="Details.Text"></span>
+
+		<mat-icon *ngIf="Details.Icon">{{Details.Icon}}</mat-icon>
+	</button>
+</ng-container>

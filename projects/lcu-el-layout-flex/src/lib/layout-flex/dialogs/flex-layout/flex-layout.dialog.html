@@ -1,0 +1,54 @@
+<form #configForm="ngForm" (ngSubmit)="Save()">
+	<h2 mat-dialog-title>Layout Details</h2>
+
+	<div mat-dialog-content>
+		<mat-form-field class="mat-full-width">
+			<mat-select placeholder="Layout" [(ngModel)]="Details.Layout" name="layout">
+				<mat-option value="">(default)</mat-option>
+				<mat-option value="row">row</mat-option>
+				<mat-option value="row-reverse">row-reverse</mat-option>
+				<mat-option value="column">column</mat-option>
+				<mat-option value="column-reverse">column-reverse</mat-option>
+			</mat-select>
+		</mat-form-field>
+	
+		<mat-slide-toggle class="mat-full-width" [(ngModel)]="Details.Wrap" name="wrap">Wrap?</mat-slide-toggle>
+	
+		<mat-form-field class="mat-full-width">
+			<mat-select placeholder="Main Axis Align" [(ngModel)]="Details.MainAxisAlign" name="mainAxis">
+				<mat-option value="">(default)</mat-option>
+				<mat-option value="start">start</mat-option>
+				<mat-option value="center">center</mat-option>
+				<mat-option value="end">end</mat-option>
+				<mat-option value="space-around">space-around</mat-option>
+				<mat-option value="space-between">space-between</mat-option>
+				<mat-option value="space-evenly">space-evenly</mat-option>
+			</mat-select>
+		</mat-form-field>
+	
+		<mat-form-field class="mat-full-width">
+			<mat-select placeholder="Cross Axis Align" [(ngModel)]="Details.CrossAxisAlign" name="crossAxis">
+				<mat-option value="">(default)</mat-option>
+				<mat-option value="start">start</mat-option>
+				<mat-option value="center">center</mat-option>
+				<mat-option value="end">end</mat-option>
+				<mat-option value="space-around">space-around</mat-option>
+				<mat-option value="space-between">space-between</mat-option>
+				<mat-option value="space-evenly">space-evenly</mat-option>
+				<mat-option value="stretch">stretch</mat-option>
+			</mat-select>
+		</mat-form-field>
+	
+		<mat-form-field class="mat-full-width">
+			<input matInput placeholder="Gap" [matAutocomplete]="gapAuto" [(ngModel)]="Details.Gap" name="gap">
+	
+			<mat-autocomplete #gapAuto="matAutocomplete">
+				<mat-option *ngFor="let gap of ['10px', '1rem', '2rem', '5%']" [value]="gap">{{gap}}</mat-option>
+			</mat-autocomplete>
+		</mat-form-field>	
+	</div>
+
+	<div mat-dialog-actions>
+		<button mat-raised-button type="submit" [disabled]="!configForm.form.valid">Save</button>
+	</div>
+</form>

@@ -1,0 +1,35 @@
+<mat-toolbar class="action-toolbar">
+	<mat-form-field *ngIf="PointersConfig?.Pointers && PointersKeys.length > 0">
+		<mat-select placeholder="Select Pointer Lookup" [(ngModel)]="Element.Pointer">
+			<ng-container *ngFor="let pointerKey of PointersKeys">
+				<ng-container *ngIf="PointersConfig.Pointers[pointerKey]; let pointer">
+					<mat-option [value]="pointerKey">{{pointerKey}}</mat-option>
+				</ng-container>
+			</ng-container>
+		</mat-select>
+	</mat-form-field>
+
+	<a mat-raised-button class="push-right" (click)="CreatePointer()">
+		Create New Pointer
+	</a>
+</mat-toolbar>
+
+<div class="push-out" *ngIf="Element.Pointer">
+	<div *ngIf="!ActivePointer || !ActivePointer.Control">
+		<a mat-raised-button (click)="SelectElement()">
+			Select Pointer Element
+		</a>
+	</div>
+
+	<div *ngIf="ActivePointer && ActivePointer.Control">
+		<forge-page-element [element]="ActivePointer" state="Builder" [data]="Data" [show-delete-action]="false" [show-main-menu-actions]="false">
+			<ng-container ngProjectAs="main-menu-actions">
+				<button mat-menu-item (click)="OpenBuilderDialog(ActivePointer)">Edit Control</button>
+
+				<button mat-menu-item (click)="OpenElementSettings(ActivePointer)">Settings</button>
+
+				<button mat-menu-item (click)="ResetElement()">Delete</button>
+			</ng-container>
+		</forge-page-element>
+	</div>
+</div>

@@ -1,0 +1,118 @@
+<form #configForm="ngForm" (ngSubmit)="Save()">
+	<h2 mat-dialog-title>Flex Config</h2>
+
+	<div mat-dialog-content>
+		<mat-form-field class="mat-full-width">
+			<input matInput placeholder="Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size._" name="size_" />
+
+			<mat-autocomplete #sizeAuto="matAutocomplete">
+				<mat-option *ngFor="let size of ['grow', 'initial', 'auto', 'none', 'nogrow', 'noshrink']" [value]="size">{{size}}</mat-option>
+			</mat-autocomplete>
+		</mat-form-field>
+
+		<mat-expansion-panel class="push-out">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					Size Variations
+				</mat-panel-title>
+
+				<mat-panel-description>
+					<mat-icon>add</mat-icon>
+				</mat-panel-description>
+			</mat-expansion-panel-header>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="XS Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.XS" name="size_xs" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="SM Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.SM" name="size_sm" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="MD Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.MD" name="size_md" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="LG Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.LG" name="size_lg" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="XL Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.XL" name="size_xl" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="Less Than SM Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.LT.SM" name="size_lt-sm" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="Less Than MD Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.LT.MD" name="size_lt-md" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="Less Than LG Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.LT.LG" name="size_lt-lg" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="Less Than XL Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.LT.XL" name="size_lt-xl" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="Greater Than XS Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.GT.XS" name="size_gt-xs" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="Greater Than SM Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.GT.SM" name="size_gt-sm" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="Greater Than MD Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.GT.MD" name="size_gt-md" class="mat-full-width" />
+			</mat-form-field>
+
+			<mat-form-field class="mat-full-width">
+				<input matInput placeholder="Greater Than LG Size" [matAutocomplete]="sizeAuto" [(ngModel)]="Config.Size.GT.LG" name="size_gt-lg" class="mat-full-width" />
+			</mat-form-field>
+		</mat-expansion-panel>
+
+		<mat-form-field class="mat-full-width">
+			<input matInput type="number" placeholder="Order" [(ngModel)]="Config.Order._" name="order_" />
+		</mat-form-field>
+
+		<mat-form-field class="mat-full-width">
+			<input matInput placeholder="Offset" [(ngModel)]="Config.Offset._" name="offset_" />
+		</mat-form-field>
+
+		<mat-form-field class="mat-full-width">
+			<input matInput placeholder="Align" [matAutocomplete]="alignAuto" [(ngModel)]="Config.Align._" name="align_">
+
+			<mat-autocomplete #alignAuto="matAutocomplete">
+				<mat-option value="auto">auto</mat-option>
+				<mat-option value="normal">normal</mat-option>
+				<mat-option value="center">center</mat-option>
+				<mat-option value="start">start</mat-option>
+				<mat-option value="end">end</mat-option>
+				<mat-option value="self-start">self-start</mat-option>
+				<mat-option value="self-end">self-end</mat-option>
+				<mat-option value="flex-start">flex-start</mat-option>
+				<mat-option value="flex-end">flex-end</mat-option>
+				<mat-option value="baseline">baseline</mat-option>
+				<mat-option value="first baseline">first baseline</mat-option>
+				<mat-option value="last baseline">last baseline</mat-option>
+				<mat-option value="stretch">stretch</mat-option>
+				<mat-option value="safe center">safe center</mat-option>
+				<mat-option value="unsafe center">unsafe center</mat-option>
+				<mat-option value="inherit">inherit</mat-option>
+				<mat-option value="initial">initial</mat-option>
+				<mat-option value="unset">unset</mat-option>
+			</mat-autocomplete>
+		</mat-form-field>
+
+		<div>
+			<mat-slide-toggle [(ngModel)]="Config.Fill" name="fill">Flex Fill?</mat-slide-toggle>
+		</div>
+	</div>
+
+	<div mat-dialog-actions>
+		<button mat-raised-button type="submit" [disabled]="!configForm.form.valid">Save</button>
+	</div>
+</form>

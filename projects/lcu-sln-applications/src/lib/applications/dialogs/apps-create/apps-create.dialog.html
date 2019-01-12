@@ -1,0 +1,25 @@
+<div *ngIf="!Loading && Application">
+	<h2 mat-dialog-title>Create New Application</h2>
+
+	<div mat-dialog-content>
+		<mat-form-field class="mat-full-width">
+			<input matInput [(ngModel)]="Application.Name" placeholder="Application Name" />
+		</mat-form-field>
+	
+		<mat-form-field class="mat-full-width">
+			<textarea matInput [(ngModel)]="Application.Description" placeholder="Application Description"></textarea>
+		</mat-form-field>
+	
+		<mat-form-field class="mat-full-width">
+			<input matInput [(ngModel)]="Application.Lookup.PathRegex" placeholder="Application Path (regex)" />
+		</mat-form-field>
+	
+		<mat-slide-toggle class="push-out" [(ngModel)]="IsAPI">Is API Application?</mat-slide-toggle>
+	</div>
+
+	<div mat-dialog-actions>
+		<button mat-raised-button color="accent" (click)="CreateApplication()">Create Application</button>
+	</div>
+</div>
+
+<div mat-dialog-content *ngIf="Loading"><mat-spinner></mat-spinner></div>
