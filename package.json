@@ -1,6 +1,6 @@
 {
 	"name": "@lowcodeunit/lcu-applications",
-	"version": "0.0.26",
+	"version": "0.0.27",
 	"scripts": {
 		"deploy": "npm version patch && npm run deploy:all",
 		"deploy:all": "npm run deploy:common && parallelshell \"npm run deploy:lcu-el-display-content\" \"npm run deploy:lcu-el-display-pointer\" \"npm run deploy:lcu-el-display-charts\" \"npm run deploy:lcu-el-display-action\" \"npm run deploy:lcu-el-display-json-view\" \"npm run deploy:lcu-el-layout-stacked\" \"npm run deploy:lcu-el-layout-flex\" \"npm run deploy:lcu-el-layout-switch-state\" \"npm run deploy:lcu-sln-applications\"",
