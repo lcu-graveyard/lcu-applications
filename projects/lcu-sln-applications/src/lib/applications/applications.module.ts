@@ -13,6 +13,7 @@ import { ForgeApplicationsSolutionDocumentation } from './documentation/applicat
 import { ForgeApplicationsSolutionHeading } from './heading/applications-heading.component';
 import { ForgeApplicationsSolutionMarketplace } from './marketplace/applications-marketplace.component';
 import { ForgeApplicationsSolutionOverview } from './overview/applications-overview.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 export class ForgeApplicationsSolutionDisplayModule extends BaseSolutionModule {
@@ -32,7 +33,7 @@ export class ForgeApplicationsSolutionDisplayModule extends BaseSolutionModule {
 		return ForgeApplicationsSolutionMarketplace;
 	}
 
-	public Overview() { 
+	public Overview() {
 		return ForgeApplicationsSolutionOverview;
 	}
 }
@@ -50,7 +51,8 @@ var comps = [
 
 @NgModule({
 	imports: [
-		FathymSharedModule,
+    FathymSharedModule,
+    ReactiveFormsModule,
 		NgxMarkdownDocsModule,
 		FlexLayoutModule,
 		DndModule,
@@ -77,5 +79,5 @@ var comps = [
 		...comps,
 	]
 })
-export class ForgeApplicationsSolutionModule { 
+export class ForgeApplicationsSolutionModule {
 }

@@ -1,1 +1,1 @@
-export * from './lib/temp';
+export * from './lib/svc/npm-public.service';

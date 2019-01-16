@@ -1,10 +1,14 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { MatCheckboxChange, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 import { isResultSuccess, BaseModeledResponse } from "@lcu/core";
-import { Status } from "@lcu/common";
+import { Status, isStatusSuccess } from "@lcu/common";
 import { ApplicationModel, ApplicationAPIProxySetup } from "@lcu/apps";
 import { ForgeApplicationsService } from "@lcu/daf-common";
 import { AppsManageAppDialogConfig } from "../../applications.core";
+import { Observable, of } from "rxjs";
+import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap } from "rxjs/operators";
+import { FormControl } from "@angular/forms";
+import { NPMPublicService } from "@lcu/applications";
 
 @Component({
   selector: "applications-manage-app-dialog",
@@ -50,7 +54,8 @@ export class AppsManageAppDialog implements OnInit {
   constructor(
     protected dialogRef: MatDialogRef<AppsManageAppDialog>,
     @Inject(MAT_DIALOG_DATA) protected data: AppsManageAppDialogConfig,
-    protected appsSvc: ForgeApplicationsService
+    protected appsSvc: ForgeApplicationsService,
+    protected npmSvc: NPMPublicService
   ) {
     this.Application = JSON.parse(JSON.stringify(data.Application));
 
@@ -119,6 +124,14 @@ export class AppsManageAppDialog implements OnInit {
     }
   }
 
+  public DisplayPackageResults(pkg: any): string {
+    if (pkg) {
+      return pkg.name;
+    } else {
+      return null;
+    }
+  }
+
   public HandleProxyChange(event: MatCheckboxChange) {
     if (event.checked && !this.Application.Proxy) {
       this.Application.Proxy = {
@@ -157,13 +170,31 @@ export class AppsManageAppDialog implements OnInit {
 
     this.Error = null;
 
+    if (
+      !this.Application.Lookup.PathRegex &&
+      !this.Application.Lookup.QueryRegex &&
+      !this.Application.Lookup.UserAgentRegex &&
+      !this.Application.Lookup.Claims &&
+      !this.Application.Lookup.RoleSets
+    )
+      this.Application.Lookup = null;
+
     if (this.ActiveApplicationType == "API") {
       this.Application.View = null;
     } else if (this.ActiveApplicationType == "View") {
       this.Application.API = null;
 
-      if (this.Application.Lookup && this.Application.Lookup.Claims)
-        this.Application.Lookup.Claims = this.Application.Lookup.Claims.filter(c => c.Type != "DAF:ApplicationBuilder");
+      //  TODO: Did removing this break anything?
+      // if (this.Application.Lookup && this.Application.Lookup.Claims)
+      //   this.Application.Lookup.Claims = this.Application.Lookup.Claims.filter(c => c.Type != "DAF:ApplicationBuilder");
+
+      var skipProxy = ["Custom", "NPM"];
+
+      if (this.ViewApplicationType && skipProxy.indexOf(this.ViewApplicationType) <= 0)
+        this.Application.Proxy = {
+          Application: "Fathym.Forge.Web.Fabric",
+          Service: "Fathym.Forge.Web"
+        };
 
       switch (this.ViewApplicationType) {
         case "AppBuilder":
@@ -243,25 +274,24 @@ export class AppsManageAppDialog implements OnInit {
         case "Custom":
           break;
       }
-
-      var skipProxy = ["Custom", "NPM"];
-
-      if (this.ViewApplicationType && skipProxy.indexOf(this.ViewApplicationType) <= 0)
-        this.Application.Proxy = {
-          Application: "Fathym.Forge.Web.Fabric",
-          Service: "Fathym.Forge.Web"
-        };
     }
 
-    if (
-      !this.Application.Lookup.PathRegex &&
-      !this.Application.Lookup.QueryRegex &&
-      !this.Application.Lookup.UserAgentRegex &&
-      !this.Application.Lookup.Claims &&
-      !this.Application.Lookup.RoleSets
-    )
-      this.Application.Lookup = null;
+    // if (!this.Application.View || !this.Application.View.FilesRoot.startsWith("@")) {
+    this.closeDialog();
+    // } else {
+    //   this.npmSvc.Unpack(this.Application.View.FilesRoot, this.Application.View.ApplicationName).subscribe(result => {
+    //     if (isStatusSuccess(result)) {
+    //       this.closeDialog();
+    //     } else {
+    //       //  TODO:  Handle better error
+    //       console.log("Something didn't work");
+    //     }
+    //   });
+    // }
+  }
 
+  //	Helpers
+  protected closeDialog() {
     this.dialogRef.close(<BaseModeledResponse<ApplicationModel>>{
       Model: this.Application,
       Status: <Status>{
@@ -270,15 +300,16 @@ export class AppsManageAppDialog implements OnInit {
       }
     });
   }
-
-  //	Helpers
   protected determineViewApplicationType() {
     this.ViewApplicationType = null;
 
     if (
       this.Application.Proxy &&
       this.Application.Proxy.Application == "Fathym.Forge.Web.Fabric" &&
-      this.Application.Proxy.Service == "Fathym.Forge.Web"
+      this.Application.Proxy.Service == "Fathym.Forge.Web" &&
+      this.Application.View &&
+      this.Application.View.FilesRoot &&
+      this.Application.View.ApplicationName
     ) {
       if (this.Application.View.FilesRoot == "/apps/no-ent") this.ViewApplicationType = "NoEnt";
       else if (this.Application.View.FilesRoot == "/apps/app-builder") this.ViewApplicationType = "AppBuilder";
@@ -289,7 +320,7 @@ export class AppsManageAppDialog implements OnInit {
       else if (this.Application.View.FilesRoot == "/marketing") this.ViewApplicationType = "Marketing";
       else if (this.Application.View.FilesRoot == "/apps/register") this.ViewApplicationType = "Register";
       else if (this.Application.View.FilesRoot == "/apps/sign-in") this.ViewApplicationType = "SignIn";
-      else if (this.Application.View.FilesRoot.startsWith('@')) this.ViewApplicationType = 'NPM';
+      else if (this.Application.View.FilesRoot.startsWith("@")) this.ViewApplicationType = "NPM";
     }
 
     if (!this.ViewApplicationType) this.ViewApplicationType = "Custom";

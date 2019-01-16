@@ -5,6 +5,7 @@ import { FathymSharedModule } from "@lcu/hosting";
 import { AppRouterModule, RoutingComponents } from "./app.router";
 import { UIModule } from "./ui.module";
 import { AppLayoutComponent } from "./app.layout";
+import { DndModule } from '@beyerleinf/ngx-dnd';
 
 export var modules: any[] = [FathymSharedModule, AppRouterModule];
 
@@ -13,6 +14,7 @@ export var modules: any[] = [FathymSharedModule, AppRouterModule];
         BrowserModule,
         BrowserAnimationsModule,
         UIModule.forRoot(),
+        DndModule.forRoot(),
         ...modules
     ],
     declarations: [...RoutingComponents, AppLayoutComponent],
