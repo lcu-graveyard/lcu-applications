@@ -5,47 +5,34 @@ import { ForgeDisplayPointerBuilderComponent } from './display-pointer-builder/d
 import { ForgeDisplayPointerMarketplaceComponent } from './display-pointer-marketplace/display-pointer-marketplace.component';
 import { ForgeDisplayPointerRenderComponent } from './display-pointer-render/display-pointer-render.component';
 import { ForgeDisplayCreatePointerBuilderDialog } from './dialogs/create-pointer/create-pointer.dialog';
-import { MatToolbarModule, MatFormFieldModule, MatSelectModule, MatButtonModule } from '@angular/material';
+import { MatToolbarModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatInputModule } from '@angular/material';
 import { DAFUIModule } from '@lcu/daf-ui';
 
 export class ForgeDisplayPointerDisplayModule extends BaseDisplayModule {
-	public Builder() {
-		return ForgeDisplayPointerBuilderComponent;
-	}
+  public Builder() {
+    return ForgeDisplayPointerBuilderComponent;
+  }
 
-	public Marketplace() {
-		return ForgeDisplayPointerMarketplaceComponent;
-	}
+  public Marketplace() {
+    return ForgeDisplayPointerMarketplaceComponent;
+  }
 
-	public Render() {
-		return ForgeDisplayPointerRenderComponent;
-	}
+  public Render() {
+    return ForgeDisplayPointerRenderComponent;
+  }
 }
 
-var comps = [
-	ForgeDisplayPointerBuilderComponent,
-	ForgeDisplayPointerMarketplaceComponent,
-	ForgeDisplayPointerRenderComponent,
-	ForgeDisplayCreatePointerBuilderDialog,
+const comps = [
+  ForgeDisplayPointerBuilderComponent,
+  ForgeDisplayPointerMarketplaceComponent,
+  ForgeDisplayPointerRenderComponent,
+  ForgeDisplayCreatePointerBuilderDialog
 ];
 
 @NgModule({
-	imports: [
-    FathymSharedModule,
-    MatButtonModule,
-		MatFormFieldModule,
-		MatSelectModule,
-		MatToolbarModule,
-		DAFUIModule,
-	],
-	declarations: [
-		...comps,
-	],
-	exports: [
-		...comps,
-	],
-	entryComponents: [
-		...comps,
-	]
+  imports: [FathymSharedModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatToolbarModule, DAFUIModule],
+  declarations: [...comps],
+  exports: [...comps],
+  entryComponents: [...comps]
 })
-export class ForgeDisplayPointerModule { }
+export class ForgeDisplayPointerModule {}
