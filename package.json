@@ -3,7 +3,7 @@
 	"version": "0.0.28",
 	"scripts": {
 		"deploy": "npm version patch && npm run deploy:all",
-		"deploy:all": "npm run deploy:common && parallelshell \"npm run deploy:lcu-el-display-content\" \"npm run deploy:lcu-el-display-pointer\" \"npm run deploy:lcu-el-display-charts\" \"npm run deploy:lcu-el-display-action\" \"npm run deploy:lcu-el-display-json-view\" \"npm run deploy:lcu-el-layout-stacked\" \"npm run deploy:lcu-el-layout-flex\" \"npm run deploy:lcu-el-layout-switch-state\" \"npm run deploy:lcu-sln-applications\"",
+		"deploy:all": "npm run deploy:common && concurrently \"npm:deploy:lcu-el-display-content\" \"npm:deploy:lcu-el-display-pointer\" \"npm:deploy:lcu-el-display-charts\" \"npm:deploy:lcu-el-display-action\" \"npm:deploy:lcu-el-display-json-view\" \"npm:deploy:lcu-el-layout-stacked\" \"npm:deploy:lcu-el-layout-flex\" \"npm:deploy:lcu-el-layout-switch-state\" \"npm:deploy:lcu-sln-applications\"",
 		"deploy:common": "npm version patch --prefix projects/common && ng build common && npm publish ./dist/common --access public",
 		"deploy:demo-forge": "ng build demo-forge --prod && npm publish ./dist/demo-forge --access public",
 		"deploy:lcu-el-display-action": "npm version patch --prefix projects/lcu-el-display-action && ng build lcu-el-display-action && npm publish ./dist/lcu-el-display-action --access public",
@@ -75,6 +75,7 @@
 		"@types/jasminewd2": "~2.0.3",
 		"@types/node": "~8.9.4",
 		"codelyzer": "~4.5.0",
+		"concurrently": "^4.1.0",
 		"jasmine-core": "~2.99.1",
 		"jasmine-spec-reporter": "~4.2.1",
 		"karma": "~3.1.1",
